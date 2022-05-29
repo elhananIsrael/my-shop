@@ -1,6 +1,14 @@
 import AddReductItemCart from "./AddReductItemCart/AddReductItemCart";
 
-function Product({ id, title, src, category, price, quantity, removeProduct }) {
+function Product({
+  _id,
+  title,
+  src,
+  category,
+  price,
+  quantity,
+  removeProduct,
+}) {
   return (
     <tr>
       <td>
@@ -17,7 +25,7 @@ function Product({ id, title, src, category, price, quantity, removeProduct }) {
         </figure>
       </td>
       <td style={{ verticalAlign: "middle" }}>
-        <AddReductItemCart id={id} quantity={quantity} />
+        <AddReductItemCart _id={_id} quantity={quantity} />
       </td>
       <td style={{ textAlign: "center", verticalAlign: "middle" }}>
         <div className="price-wrap">
@@ -30,7 +38,7 @@ function Product({ id, title, src, category, price, quantity, removeProduct }) {
           className="btn btn-light"
           data-abc="true"
           onClick={() => {
-            removeProduct(id, quantity, price);
+            removeProduct(_id);
           }}
         >
           Remove

@@ -7,7 +7,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Typography from "@mui/material/Typography";
 
-function AddReductItemCart({ id, quantity }) {
+function AddReductItemCart({ _id, quantity }) {
   const [, , addItemQuantity, removeItemQuantity] = useContext(MyContext);
 
   return (
@@ -18,7 +18,7 @@ function AddReductItemCart({ id, quantity }) {
     >
       <Button
         onClick={() => {
-          removeItemQuantity(id);
+          removeItemQuantity(_id);
         }}
       >
         <RemoveIcon fontSize="small" />
@@ -36,7 +36,7 @@ function AddReductItemCart({ id, quantity }) {
 
       <Button
         onClick={() => {
-          addItemQuantity(id);
+          addItemQuantity(_id);
         }}
       >
         <AddIcon fontSize="small" />

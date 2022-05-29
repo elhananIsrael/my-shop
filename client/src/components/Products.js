@@ -23,11 +23,11 @@ function Products({ products_products, removeProduct }) {
               </tr>
             </thead>
 
-            <tbody id="productsElements">
+            <tbody>
               {products_products.map((product) => (
                 <Product
-                  key={product.id}
-                  id={product.id}
+                  key={product._id}
+                  _id={product._id}
                   title={product.title}
                   src={product.image}
                   category={product.category}

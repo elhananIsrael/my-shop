@@ -1,12 +1,12 @@
 const express = require("express");
-const res = require("express/lib/response");
-const { json } = require("express/lib/response");
+// const res = require("express/lib/response");
+// const { json } = require("express/lib/response");
 const app = express();
 const fs = require("fs");
 const mongoose = require("mongoose");
 const fetch = require("node-fetch");
 require("dotenv").config();
-var cors = require("cors");
+// var cors = require("cors");
 
 function isEmpty(obj) {
   for (var x in obj) {
@@ -14,9 +14,13 @@ function isEmpty(obj) {
   }
   return true;
 }
-// use it before all route definitions
-// app.use(cors({ origin: "http://localhost:8000" }));
-app.use(cors({ origin: "*" }));
+
+//Serve static files from the React app
+app.use(express.static("client/build"));
+
+// // use it before all route definitions
+// // app.use(cors({ origin: "http://localhost:8000" }));
+// app.use(cors({ origin: "*" }));
 
 app.use(express.json());
 
@@ -34,11 +38,11 @@ try {
 
   const Product = mongoose.model("Product", productSchema);
 
-  app.get("/", (req, res) => {
-    res.send("Hello World!");
-  });
+  // app.get("/", (req, res) => {
+  //   res.send("Hello World!");
+  // });
 
-  app.get("/products", (req, res) => {
+  app.get("/api/products", (req, res) => {
     const {
       title,
       price,
@@ -106,14 +110,14 @@ try {
     }
   });
 
-  app.get("/products/:id", (req, res) => {
+  app.get("/api/products/:id", (req, res) => {
     const { id } = req.params;
     Product.findById(id, (err, product) => {
       res.send(product);
     });
   });
 
-  app.post("/products", (req, res) => {
+  app.post("/api/products", (req, res) => {
     const { title, price, description, category, image, rating, quantity } =
       req.body;
     const product = new Product({
@@ -131,7 +135,7 @@ try {
     });
   });
 
-  app.put("/products/:id", (req, res) => {
+  app.put("/api/products/:id", (req, res) => {
     const { id } = req.params;
     const { title, price, description, category, image, rating, quantity } =
       req.body;
@@ -145,7 +149,7 @@ try {
     );
   });
 
-  app.delete("/products/:id", (req, res) => {
+  app.delete("/api/products/:id", (req, res) => {
     const { id } = req.params;
     Product.findByIdAndDelete(id, (err, product) => {
       if (!isEmpty(err)) console.log("err", err);
@@ -153,6 +157,12 @@ try {
       InitProducts();
       res.send(product);
     });
+  });
+
+  // The "catchall" handler: For any request that doesn't
+  // match one above, send back React's index.html file.
+  app.get("*", (req, res) => {
+    res.sendFile(__dirname + "/client/build/index.html");
   });
 
   const InitProducts = () => {
@@ -180,17 +190,20 @@ try {
       }
     });
   };
-
+  const { DB_USER, DB_PASS, DB_HOST, DB_NAME } = process.env;
   const mongo_url =
-    process.env.MONGO_URL || "mongodb://localhost:27017/my_shop";
-  const port = process.env.PORT || 8000;
+    `mongodb+srv://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority` ||
+    "mongodb://localhost:27017/my_shop";
+  // const mongo_url =
+  //   process.env.MONGO_URL || "mongodb://localhost:27017/my_shop";
+  const port = process.env.PORT || 5000;
   mongoose.connect(
     mongo_url,
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err) => {
       app.listen(port, () => {
         InitProducts();
-        console.log("app listening..");
+        console.log(`app listening on ${port}`);
       });
     }
   );

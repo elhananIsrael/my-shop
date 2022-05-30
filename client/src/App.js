@@ -46,7 +46,7 @@ function App() {
   };
 
   const getAllProductsFromServer = () => {
-    fetch("http://localhost:8000/products")
+    fetch("/api/products")
       .then((response) => {
         // console.log(response);
         return response.json();
@@ -86,7 +86,7 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quantity: newQuantity }),
       };
-      fetch(`http://localhost:8000/products/${_id}`, options)
+      fetch(`/api/products/${_id}`, options)
         .then((response) => {
           // console.log(response);
           return response.json();
@@ -125,7 +125,7 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quantity: newQuantity }),
       };
-      fetch(`http://localhost:8000/products/${_id}`, options)
+      fetch(`/api/products/${_id}`, options)
         .then((response) => {
           // console.log(response);
           return response.json();
@@ -141,7 +141,7 @@ function App() {
   };
 
   const removeProduct = (_id) => {
-    fetch(`http://localhost:8000/products/${_id}`, { method: "DELETE" })
+    fetch(`/api/products/${_id}`, { method: "DELETE" })
       .then((response) => {
         // console.log(response);
         return response.json();

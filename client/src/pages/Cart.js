@@ -17,17 +17,11 @@ const myDate = () => {
 };
 
 function Cart({ productsArr, removeProduct }) {
-  const [text, setText] = useState("helo");
   const h1Ref = useRef();
-  console.log(h1Ref);
-  console.log("Cart page");
   useEffect(() => {
     if ((h1Ref !== undefined || h1Ref !== null) && h1Ref.current) {
-      // console.log(h1Ref.current);
       h1Ref.current.innerHTML = `<h1>WELCOME!</h1><h2>Good ${myDate()}!</h2>`;
-      setText("my test");
     }
-    // console.log(h1Ref.current);
   }, []);
 
   return (

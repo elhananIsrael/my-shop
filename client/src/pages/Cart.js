@@ -1,7 +1,35 @@
+import { useEffect, useState, useRef } from "react";
 import Loader from "../components/Loader/Loader";
 import Products from "../components/Products";
 
-function Cart({ h1Ref, productsArr, removeProduct }) {
+const myDate = () => {
+  const date = new Date();
+  const hours = date.getHours();
+  let timeOfDay;
+  if (hours < 12) {
+    timeOfDay = "Morning";
+  } else if (hours >= 12 && hours < 17) {
+    timeOfDay = "Afternoon";
+  } else {
+    timeOfDay = "Night";
+  }
+  return timeOfDay;
+};
+
+function Cart({ productsArr, removeProduct }) {
+  const [text, setText] = useState("helo");
+  const h1Ref = useRef();
+  console.log(h1Ref);
+  console.log("Cart page");
+  useEffect(() => {
+    if ((h1Ref !== undefined || h1Ref !== null) && h1Ref.current) {
+      // console.log(h1Ref.current);
+      h1Ref.current.innerHTML = `<h1>WELCOME!</h1><h2>Good ${myDate()}!</h2>`;
+      setText("my test");
+    }
+    // console.log(h1Ref.current);
+  }, []);
+
   return (
     <>
       {productsArr.length > 0 ? (
@@ -13,9 +41,17 @@ function Cart({ h1Ref, productsArr, removeProduct }) {
         </>
       ) : (
         <>
-          <h1 style={{ position: "absolute", left: "43%" }} ref={h1Ref}>
-            WELCOME!
-          </h1>
+          <div
+            style={{
+              position: "absolute",
+              left: "43%",
+              top: "27%",
+              textAlign: "center",
+            }}
+            ref={h1Ref}
+          >
+            <h1>WELCOME!</h1>
+          </div>
           <Loader />
         </>
       )}

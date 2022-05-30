@@ -1,5 +1,6 @@
 import "./App.css";
-import { useEffect, useRef, useState } from "react";
+import { React, useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MyContext from "./MyContext";
 import Head from "./components/Head";
 import ProductSummary from "./components/ProductSummary";
@@ -10,8 +11,6 @@ function App() {
   const [total, setTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [shipping, setShipping] = useState(9.99);
-
-  const h1Ref = useRef(null);
 
   const getIndex = (arr, key) => {
     for (var i = 0; i < arr.length; i++) {
@@ -52,11 +51,6 @@ function App() {
         return response.json();
       })
       .then((newArr) => {
-        // let newArr = [...products];
-        // for (let index = 0; index < newArr.length; index++) {
-        //   newArr[index] = { ...products[index], quantity: 0 };
-        // }
-        // console.log(newArr);
         setProductsArr(newArr);
         updateProductSummary(newArr);
       })
@@ -167,25 +161,38 @@ function App() {
   }, []);
 
   return (
-    <MyContext.Provider
-      value={[productsArr, setProductsArr, addItemQuantity, removeItemQuantity]}
-    >
-      <div className="container-fluid">
-        <Head />
-        <div className="row">
-          <ProductSummary
-            totalPrice={totalPrice}
-            shipping={shipping}
-            total={total}
-          />
-          <Cart
-            h1Ref={h1Ref}
-            productsArr={productsArr}
-            removeProduct={removeProduct}
-          />
+    <Router>
+      <MyContext.Provider
+        value={[
+          productsArr,
+          setProductsArr,
+          addItemQuantity,
+          removeItemQuantity,
+        ]}
+      >
+        <div className="container-fluid">
+          <Head />
+          <div className="row">
+            <ProductSummary
+              totalPrice={totalPrice}
+              shipping={shipping}
+              total={total}
+            />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Cart
+                    productsArr={productsArr}
+                    removeProduct={removeProduct}
+                  />
+                }
+              />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </MyContext.Provider>
+      </MyContext.Provider>
+    </Router>
   );
 }
 
